@@ -26,4 +26,3 @@ La pàgina suporta dos idiomes:
 - Castellano
 
 El selector d'idiomes es troba a la part superior dreta i guarda la preferència de l'usuari.
-
