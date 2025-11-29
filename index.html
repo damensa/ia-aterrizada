@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ca">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Aterrizada</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Work+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        /* 
+         * IA Aterrizada - Premium Minimalist Landing Page
+         * CSS Variables defined without values as requested.
+         */
+        :root {
+            /* Colors - To be assigned */
+            --color-primary: ;
+            --color-secondary: ;
+            --color-background: ;
+            --color-text: ;
+            --color-card: ;
+            --color-cta: ;
+            --color-border: ;
+            --color-muted: ;
+
+            /* Typography */
+            --font-title: 'Inter', sans-serif;
+            --font-body: 'Work Sans', sans-serif;
+
+            /* Spacing */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 1rem;
+            --spacing-md: 2rem;
+            --spacing-lg: 4rem;
+            --spacing-xl: 8rem;
+
+            /* Layout */
+            --container-width: 1200px;
+            --border-radius-pill: 9999px;
+            --border-radius-card: 1rem;
+            --border-radius-sm: 0.5rem;
+
+            /* Effects */
+            --shadow-card: ;
+            /* Placeholder for box-shadow */
+            --gradient-hero: ;
+            /* Placeholder for background gradient */
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            /* For absolute positioning of lang switch */
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-title);
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--color-text);
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button,
+        .btn {
+            cursor: pointer;
+            border: none;
+            font-family: var(--font-title);
+            font-weight: 600;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        /* Utility Classes */
+        .container {
+            width: 100%;
+            max-width: var(--container-width);
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        .grid {
+            display: grid;
+            gap: var(--spacing-md);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-xl {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            letter-spacing: -0.02em;
+        }
+
+        .text-lg {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            letter-spacing: -0.01em;
+        }
+
+        .text-md {
+            font-size: 1.25rem;
+        }
+
+        .mb-sm {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .mb-md {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .mb-lg {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* Components */
+        .btn-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2.5rem;
+            border-radius: var(--border-radius-pill);
+            font-size: 1rem;
+            background-color: var(--color-cta);
+            color: var(--color-background);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid var(--color-text);
+            color: var(--color-text);
+        }
+
+        .card {
+            background-color: var(--color-card);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-card);
+            box-shadow: var(--shadow-card);
+        }
+
+        /* Language Switcher */
+        .lang-switch {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000;
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.25rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            font-family: var(--font-body, 'Work Sans', sans-serif);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #333;
+            opacity: 0.5;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover {
+            opacity: 0.8;
+        }
+
+        .lang-btn.active {
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: #000;
+        }
+
+        /* Language Visibility Logic */
+        :lang(ca) [data-lang="es"] {
+            display: none !important;
+        }
+
+        :lang(es) [data-lang="ca"] {
+            display: none !important;
+        }
+
+        /* Sections */
+
+        /* Hero */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: var(--gradient-hero);
+            padding: var(--spacing-xl) 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            margin-top: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        /* Problem Section */
+        .section-problem {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .problem-list {
+            margin: var(--spacing-md) auto;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .problem-list li {
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-sm);
+            border-left: 2px solid var(--color-secondary);
+        }
+
+        /* What We Do */
+        .section-what {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        /* Who is it for */
+        .section-who {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .who-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .who-tag {
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--border-radius-pill);
+            background-color: var(--color-card);
+            border: 1px solid var(--color-border);
+        }
+
+        /* Results */
+        .section-results {
+            padding: var(--spacing-xl) 0;
+        }
+
+        /* Process */
+        .section-process {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .grid-5 {
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        }
+
+        .process-step {
+            position: relative;
+        }
+
+        .step-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--color-secondary);
+            opacity: 0.3;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        /* CTA Final */
+        .section-cta {
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        /* Footer */
+        .footer {
+            padding: var(--spacing-lg) 0;
+            border-top: 1px solid var(--color-border);
+            font-size: 0.9rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        /* Logo */
+        .logo {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: var(--spacing-md);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            :root {
+                --spacing-xl: 4rem;
+                --spacing-lg: 3rem;
+            }
+
+            .text-xl {
+                font-size: 2.5rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+        }
+    </style>
+    <script>
+        function setLang(lang) {
+            // Canviem l'atribut lang del document HTML
+            document.documentElement.lang = lang;
+            
+            // Actualitzem l'estat actiu dels botons
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                if (btn.dataset.langBtn === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Guardem la preferència a localStorage
+            localStorage.setItem('preferredLang', lang);
+        }
+        
+        // Carreguem l'idioma preferit al carregar la pàgina
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedLang = localStorage.getItem('preferredLang') || 'ca';
+            setLang(savedLang);
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="lang-switch">
+        <button class="lang-btn active" data-lang-btn="ca" onclick="setLang('ca')">Català</button>
+        <button class="lang-btn" data-lang-btn="es" onclick="setLang('es')">Castellano</button>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <img src="IA Aterrizada.png" alt="IA Aterrizada Logo" class="logo">
+            <h1 class="text-xl mb-md">
+                <span data-lang="ca">Intel·ligència Artificial,<br>Aterrada al Teu Negoci</span>
+                <span data-lang="es">Inteligencia Artificial,<br>Aterrizada en tu Negocio</span>
+            </h1>
+            <p class="text-md mb-md">
+                <span data-lang="ca">T'escoltem i implementem solucions d'IA pràctiques que estalvien temps
+                    i multipliquen resultats des del primer dia.</span>
+                <span data-lang="es">Te escuchamos e implementamos soluciones de IA prácticas que ahorran tiempo
+                    y multiplican resultados desde el primer día.</span>
+            </p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-pill">
+                    <span data-lang="ca">Començar ara</span>
+                    <span data-lang="es">Empezar ahora</span>
+                </a>
+                <a href="#process" class="btn btn-pill btn-secondary">
+                    <span data-lang="ca">Com funciona?</span>
+                    <span data-lang="es">¿Cómo funciona?</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- El Problema -->
+    <section class="section-problem container">
+        <div class="text-center">
+            <h2 class="text-lg mb-md">
+                <span data-lang="ca">El problema de sempre</span>
+                <span data-lang="es">El problema de siempre</span>
+            </h2>
+            <p class="mb-md">
+                <span data-lang="ca">El teu equip perd hores en tasques que no aporten valor real.</span>
+                <span data-lang="es">Tu equipo pierde horas en tareas que no aportan valor real.</span>
+            </p>
+            <ul class="problem-list">
+                <li>
+                    <span data-lang="ca">Processos manuals lents i propensos a errors.</span>
+                    <span data-lang="es">Procesos manuales lentos y propensos a errores.</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Dades disperses que no ajuden a prendre decisions.</span>
+                    <span data-lang="es">Datos dispersos que no ayudan a tomar decisiones.</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Manca d'escalabilitat quan creix la demanda.</span>
+                    <span data-lang="es">Falta de escalabilidad cuando crece la demanda.</span>
+                </li>
+            </ul>
+            <p class="text-md"><strong>
+                    <span data-lang="ca">Això s'ha acabat.</span>
+                    <span data-lang="es">Esto se ha acabado.</span>
+                </strong></p>
+        </div>
+    </section>
+
+    <!-- Què fem -->
+    <section class="section-what container">
+        <h2 class="text-lg mb-lg text-center">
+            <span data-lang="ca">Què fem per tu</span>
+            <span data-lang="es">Qué hacemos por ti</span>
+        </h2>
+        <div class="grid grid-3">
+            <div class="card">
+                <h3 class="mb-sm">
+                    <span data-lang="ca">Analitzem</span>
+                    <span data-lang="es">Analizamos</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Estudiem els teus processos actuals per identificar colls d'ampolla i
+                        ineficiències.</span>
+                    <span data-lang="es">Estudiamos tus procesos actuales para identificar cuellos de botella e
+                        ineficiencias.</span>
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="mb-sm">
+                    <span data-lang="ca">Detectem</span>
+                    <span data-lang="es">Detectamos</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Localitzem les àrees on la IA pot tenir un impacte immediat i mesurable.</span>
+                    <span data-lang="es">Localizamos las áreas donde la IA puede tener un impacto inmediato y
+                        medible.</span>
+                </p>
+            </div>
+            <div class="card">
+                <h3 class="mb-sm">
+                    <span data-lang="ca">Entreguem</span>
+                    <span data-lang="es">Entregamos</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Implementem un pla personalitzat, clau en mà i sense complicacions
+                        tècniques.</span>
+                    <span data-lang="es">Implementamos un plan personalizado, llave en mano y sin complicaciones
+                        técnicas.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Per a qui és -->
+    <section class="section-who container text-center">
+        <h2 class="text-lg mb-md">
+            <span data-lang="ca">Per a qui és IA Aterrizada?</span>
+            <span data-lang="es">¿Para quién es IA Aterrizada?</span>
+        </h2>
+        <div class="who-list">
+            <div class="who-tag">
+                <span data-lang="ca">Petits negocis</span>
+                <span data-lang="es">Pequeños negocios</span>
+            </div>
+            <div class="who-tag">
+                <span data-lang="ca">Pimes</span>
+                <span data-lang="es">Pymes</span>
+            </div>
+            <div class="who-tag">
+                <span data-lang="ca">Empreses de serveis</span>
+                <span data-lang="es">Empresas de servicios</span>
+            </div>
+            <div class="who-tag">
+                <span data-lang="ca">Consultories</span>
+                <span data-lang="es">Consultoras</span>
+            </div>
+            <div class="who-tag">
+                <span data-lang="ca">Perruqueries</span>
+                <span data-lang="es">Peluquerias</span>
+            </div>
+            <div class="who-tag">
+                <span data-lang="ca">Tallers</span>
+                <span data-lang="es">Talleres</span>
+            </div>
+        </div>
+        <p class="text-md">
+            <span data-lang="ca">Per a empresaris i autònoms que volen millorar la seva eficiència i creixement.</span>
+            <span data-lang="es">Para empresarios y autónomos que quieren mejorar su eficiencia y crecimiento.</span>
+        </p>
+    </section>
+
+    <!-- Resultats -->
+    <section class="section-results container">
+        <div class="card">
+            <h2 class="text-lg mb-md text-center">
+                <span data-lang="ca">Resultats Reals</span>
+                <span data-lang="es">Resultados Reales</span>
+            </h2>
+            <div class="grid grid-3 text-center">
+                <div>
+                    <h3 class="text-xl mb-sm">40%</h3>
+                    <p>
+                        <span data-lang="ca">Estalvi de temps operatiu</span>
+                        <span data-lang="es">Ahorro de tiempo operativo</span>
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl mb-sm">x2</h3>
+                    <p>
+                        <span data-lang="ca">Velocitat d'execució</span>
+                        <span data-lang="es">Velocidad de ejecución</span>
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl mb-sm">0%</h3>
+                    <p>
+                        <span data-lang="ca">Fricció en l'adopció</span>
+                        <span data-lang="es">Fricción en la adopción</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Procés de treball -->
+    <section id="process" class="section-process container">
+        <h2 class="text-lg mb-lg text-center">
+            <span data-lang="ca">El nostre procés</span>
+            <span data-lang="es">Nuestro proceso</span>
+        </h2>
+        <div class="grid grid-5">
+            <div class="process-step">
+                <div class="step-number">01</div>
+                <h3>
+                    <span data-lang="ca">T'escoltem i analitzem el teu negoci</span>
+                    <span data-lang="es">Te escuchamos y analizamos tu negocio</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Entenem el teu negoci.</span>
+                    <span data-lang="es">Entendemos tu negocio.</span>
+                </p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">02</div>
+                <h3>
+                    <span data-lang="ca">Estratègia</span>
+                    <span data-lang="es">Estrategia</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Dissenyem el pla.</span>
+                    <span data-lang="es">Diseñamos el plan.</span>
+                </p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">03</div>
+                <h3>
+                    <span data-lang="ca">Desenvolupament</span>
+                    <span data-lang="es">Desarrollo</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Creem la solució.</span>
+                    <span data-lang="es">Creamos la solución.</span>
+                </p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">04</div>
+                <h3>
+                    <span data-lang="ca">Implementació</span>
+                    <span data-lang="es">Implementación</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Integrem sense dolor.</span>
+                    <span data-lang="es">Integramos sin dolor.</span>
+                </p>
+            </div>
+            <div class="process-step">
+                <div class="step-number">05</div>
+                <h3>
+                    <span data-lang="ca">Formació</span>
+                    <span data-lang="es">Formación</span>
+                </h3>
+                <p>
+                    <span data-lang="ca">Capacitem el teu equip.</span>
+                    <span data-lang="es">Capacitamos a tu equipo.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Final -->
+    <section class="section-cta container">
+        <div class="card">
+            <h2 class="text-lg mb-md">
+                <span data-lang="ca">Aterra la IA avui mateix</span>
+                <span data-lang="es">Aterriza la IA hoy mismo</span>
+            </h2>
+            <p class="mb-md">
+                <span data-lang="ca">Pots començar ara a millorar. La transformació comença amb una
+                    conversa.</span>
+                <span data-lang="es">Puedes empezar ahora a mejorar. La transformación empieza con una
+                    conversación.</span>
+            </p>
+            <a href="#contact" class="btn btn-pill">
+                <span data-lang="ca">Parlem del teu projecte</span>
+                <span data-lang="es">Hablemos de tu proyecto</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>IA Aterrizada</h3>
+                <p>
+                    <span data-lang="ca">Fent la tecnologia accessible i útil.</span>
+                    <span data-lang="es">Haciendo la tecnología accesible y útil.</span>
+                </p>
+            </div>
+            <div class="footer-links">
+                <a href="#">
+                    <span data-lang="ca">Contacte</span>
+                    <span data-lang="es">Contacto</span>
+                </a>
+                <a href="#">
+                    <span data-lang="ca">Privacitat</span>
+                    <span data-lang="es">Privacidad</span>
+                </a>
+                <a href="#">
+                    <span data-lang="ca">Termes i Condicions</span>
+                    <span data-lang="es">Términos y Condiciones</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
