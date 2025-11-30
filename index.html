@@ -165,6 +165,61 @@
             box-shadow: var(--shadow-card);
         }
 
+        /* Top Promo Buttons */
+        .top-promo-btn {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1000;
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            max-width: calc(100vw - 8rem);
+        }
+
+        .top-promo-btn .btn {
+            font-size: 0.875rem;
+            padding: 0.75rem 1.5rem;
+            white-space: nowrap;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-family: var(--font-body, 'Work Sans', sans-serif);
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
         /* Language Switcher */
         .lang-switch {
             position: fixed;
@@ -255,6 +310,24 @@
             border-left: 2px solid var(--color-secondary);
         }
 
+        /* Generic Section */
+        .section {
+            padding: var(--spacing-xl) 0;
+        }
+
+        /* Benefits List */
+        .benefits-list {
+            margin: var(--spacing-md) auto;
+            max-width: 700px;
+            text-align: left;
+        }
+
+        .benefits-list li {
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-sm);
+            border-left: 2px solid var(--color-secondary);
+        }
+
         /* What We Do */
         .section-what {
             padding: var(--spacing-xl) 0;
@@ -308,6 +381,63 @@
             color: var(--color-secondary);
             opacity: 0.3;
             margin-bottom: var(--spacing-xs);
+        }
+
+        /* Shopping IA Section */
+        .section-shopping {
+            padding: var(--spacing-xl) 0;
+        }
+
+        .shopping-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .shopping-list {
+            list-style: none;
+            text-align: left;
+            max-width: 600px;
+            margin: var(--spacing-md) auto;
+            padding: 0;
+        }
+
+        .shopping-list li {
+            margin-bottom: var(--spacing-sm);
+            padding-left: var(--spacing-md);
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .shopping-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary);
+            font-weight: bold;
+        }
+
+        .shopping-list li.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .shopping-cta {
+            margin-top: var(--spacing-lg);
+        }
+
+        .shopping-btn {
+            font-size: 1.1rem;
+            padding: 1.2rem 3rem;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .shopping-btn.visible {
+            opacity: 1;
+            transform: scale(1);
         }
 
         /* CTA Final */
@@ -387,14 +517,86 @@
             setLang(savedLang);
         });
     </script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        // Variables globals
+        window.emailjsReady = false;
+        window.emailjsLoadError = false;
+        
+        function initEmailJS() {
+            if (typeof emailjs !== 'undefined' && emailjs.init) {
+                try {
+                    emailjs.init("QbtPLJ9599Nop2MbW");
+                    window.emailjsReady = true;
+                    console.log('EmailJS initialized successfully');
+                } catch (error) {
+                    console.error('Error initializing EmailJS:', error);
+                    window.emailjsReady = false;
+                    window.emailjsLoadError = true;
+                }
+            } else {
+                console.error('EmailJS is not available');
+                window.emailjsReady = false;
+                window.emailjsLoadError = true;
+            }
+        }
+        
+        // Esperar que EmailJS estigui disponible després de carregar el script
+        function waitForEmailJS(callback, maxAttempts) {
+            maxAttempts = maxAttempts || 30;
+            var attempts = 0;
+            
+            function check() {
+                attempts++;
+                if (typeof emailjs !== 'undefined' && typeof emailjs.init === 'function') {
+                    callback();
+                } else if (attempts < maxAttempts) {
+                    setTimeout(check, 200);
+                } else {
+                    console.error('EmailJS no s\'ha pogut carregar després de múltiples intents');
+                    window.emailjsLoadError = true;
+                }
+            }
+            
+            // Esperar a que la pàgina estigui carregada
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', function() {
+                    setTimeout(check, 500);
+                });
+            } else {
+                setTimeout(check, 500);
+            }
+        }
+        
+        // Inicialitzar quan EmailJS estigui disponible
+        waitForEmailJS(initEmailJS);
+    </script>
 </head>
 
 <body>
+
+    <div class="top-promo-btn">
+        <a href="#optimitzacio-google" class="btn btn-pill">
+            <span data-lang="ca">Fes que la IA trobi el teu negoci</span>
+            <span data-lang="es">Haz que la IA encuentre tu negocio</span>
+        </a>
+        <a href="#contact-form" class="btn btn-pill" onclick="trackShoppingCTA(); return false;">
+            <span data-lang="ca">Vull que el meu negoci aparegui a ChatGPT Shopping</span>
+            <span data-lang="es">Quiero que mi negocio aparezca en ChatGPT Shopping</span>
+        </a>
+    </div>
 
     <div class="lang-switch">
         <button class="lang-btn active" data-lang-btn="ca" onclick="setLang('ca')">Català</button>
         <button class="lang-btn" data-lang-btn="es" onclick="setLang('es')">Castellano</button>
     </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" onclick="scrollToTop()">
+        <span>↑</span>
+        <span data-lang="ca">Tornar al principi</span>
+        <span data-lang="es">Volver al inicio</span>
+    </button>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -636,6 +838,90 @@
         </div>
     </section>
 
+    <!-- Google Business Optimization -->
+    <section id="optimitzacio-google" class="section container">
+        <div style="max-width: 700px; margin: 0 auto;">
+            <h2 class="text-lg mb-md text-center">
+                <span data-lang="ca">Fes que la IA trobi el teu negoci</span>
+                <span data-lang="es">Haz que la IA encuentre tu negocio</span>
+            </h2>
+            <p class="text-md mb-md">
+                <span data-lang="ca">Fes que el teu negoci aparegui abans que la competència a Google i ChatGPT.</span>
+                <span data-lang="es">Haz que tu negocio aparezca antes que la competencia en Google y ChatGPT.</span>
+            </p>
+            <p class="mb-md">
+                <span data-lang="ca">Molts negocis locals tenen un perfil de Google incomplet o poc optimitzat.
+                    A IA Aterrizada revisem el teu perfil i el millorem perquè Google i les IA
+                    entenguin millor què ofereixes i et recomanin més sovint.
+                    En només 24 hores pots tenir un perfil actualitzat, atractiu i preparat
+                    per destacar quan algú cerqui el que ofereixes a la teva zona.</span>
+                <span data-lang="es">Muchos negocios locales tienen un perfil de Google incompleto o poco optimizado.
+                    En IA Aterrizada revisamos tu perfil y lo mejoramos para que Google y las IA
+                    entiendan mejor lo que ofreces y te recomienden más a menudo.
+                    En solo 24 horas puedes tener un perfil actualizado, atractivo y preparado
+                    para destacar cuando alguien busque lo que ofreces en tu zona.</span>
+            </p>
+            <h3 class="mb-sm">
+                <span data-lang="ca">Què inclou l'optimització (servei puntual per 20 €):</span>
+                <span data-lang="es">Qué incluye la optimización (servicio puntual por 20 €):</span>
+            </h3>
+            <ul class="benefits-list">
+                <li>
+                    <span data-lang="ca">Descripció optimitzada amb paraules clau locals</span>
+                    <span data-lang="es">Descripción optimizada con palabras clave locales</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Preguntes i respostes (Q&A) que milloren la visibilitat</span>
+                    <span data-lang="es">Preguntas y respuestas (Q&A) que mejoran la visibilidad</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Publicació amb crida a l'acció i imatge</span>
+                    <span data-lang="es">Publicación con llamada a la acción e imagen</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Categories i atributs ajustats</span>
+                    <span data-lang="es">Categorías y atributos ajustados</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Codi estructurat perquè la IA entengui millor el teu negoci</span>
+                    <span data-lang="es">Código estructurado para que la IA entienda mejor tu negocio</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Informe abans/després amb resultats visuals</span>
+                    <span data-lang="es">Informe antes/después con resultados visuales</span>
+                </li>
+            </ul>
+            <h3 class="mb-sm" style="margin-top: var(--spacing-md);">
+                <span data-lang="ca">Beneficis clars:</span>
+                <span data-lang="es">Beneficios claros:</span>
+            </h3>
+            <ul class="benefits-list">
+                <li>
+                    <span data-lang="ca">Més visibilitat a Google i Maps</span>
+                    <span data-lang="es">Más visibilidad en Google y Maps</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Aparicions més freqüents a recomanacions d'IA</span>
+                    <span data-lang="es">Apariciones más frecuentes en recomendaciones de IA</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Millor percepció de marca</span>
+                    <span data-lang="es">Mejor percepción de marca</span>
+                </li>
+                <li>
+                    <span data-lang="ca">Servei ràpid i sense compromís</span>
+                    <span data-lang="es">Servicio rápido y sin compromiso</span>
+                </li>
+            </ul>
+            <div class="text-center" style="margin-top: var(--spacing-lg);">
+                <a href="#formulari-diagnostic" class="btn btn-pill">
+                    <span data-lang="ca">Vull el meu diagnòstic gratuït</span>
+                    <span data-lang="es">Quiero mi diagnóstico gratuito</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA Final -->
     <section class="section-cta container">
         <div class="card">
@@ -653,6 +939,102 @@
                 <span data-lang="ca">Parlem del teu projecte</span>
                 <span data-lang="es">Hablemos de tu proyecto</span>
             </a>
+
+            <!-- FORMULARI DIAGNÒSTIC GOOGLE BUSINESS -->
+            <div id="contact-form" style="margin-top: 40px; text-align: left; max-width: 600px; margin-left: auto; margin-right: auto;">
+                <h3 class="mb-sm">
+                    <span data-lang="ca">Demana el teu diagnòstic gratuït</span>
+                    <span data-lang="es">Solicita tu diagnóstico gratuito</span>
+                </h3>
+                <p class="mb-md" style="font-size: 16px;">
+                    <span data-lang="ca">Omple aquest breu formulari i et prepararem un diagnòstic visual del teu perfil de Google Business.</span>
+                    <span data-lang="es">Completa este breve formulario y te prepararemos un diagnóstico visual de tu perfil de Google Business.</span>
+                </p>
+
+                <form id="diagnostic-form" style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <label>
+                            <span data-lang="ca">Nom del negoci</span>
+                            <span data-lang="es">Nombre del negocio</span>
+                        </label><br>
+                        <input type="text" name="nom" required 
+                            style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-card);">
+                    </div>
+
+                    <div>
+                        <label>
+                            <span data-lang="ca">Enllaç del teu perfil de Google Business</span>
+                            <span data-lang="es">Enlace de tu perfil de Google Business</span>
+                        </label><br>
+                        <input type="url" name="google_link" required
+                            placeholder="https://g.page/…"
+                            style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-card);">
+                    </div>
+
+                    <div>
+                        <label>
+                            <span data-lang="ca">Correu electrònic on vols rebre el diagnòstic</span>
+                            <span data-lang="es">Correo electrónico donde quieres recibir el diagnóstico</span>
+                        </label><br>
+                        <input type="email" name="email" required
+                            style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--color-border); background: var(--color-card);">
+                    </div>
+
+                    <button type="submit" id="submit-diagnostic-btn" class="btn btn-pill" style="width: 100%; text-align: center;">
+                        <span id="submit-text">
+                            <span data-lang="ca">Envia'm el meu diagnòstic</span>
+                            <span data-lang="es">Envíame mi diagnóstico</span>
+                        </span>
+                    </button>
+                </form>
+
+                <p id="confirmation-message" style="display: none; margin-top: 20px; font-size: 18px; text-align: center;">
+                    <span data-lang="ca">Gràcies! Hem rebut la teva sol·licitud. En breu rebràs el diagnòstic personalitzat al teu correu.</span>
+                    <span data-lang="es">¡Gracias! Hemos recibido tu solicitud. En breve recibirás el diagnóstico personalizado en tu correo.</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping IA Section -->
+    <section class="section-shopping container">
+        <div class="shopping-content text-center">
+            <h2 class="text-lg mb-md">
+                <span data-lang="ca">Preparem el teu negoci per a la nova era del Shopping intel·ligent</span>
+                <span data-lang="es">Preparamos tu negocio para la nueva era del Shopping inteligente</span>
+            </h2>
+            
+            <div class="shopping-points">
+                <ul class="shopping-list">
+                    <li>
+                        <span data-lang="ca">Millorem la manera com el teu negoci es presenta en entorns d'IA.</span>
+                        <span data-lang="es">Mejoramos la forma en que tu negocio se presenta en entornos de IA.</span>
+                    </li>
+                    <li>
+                        <span data-lang="ca">Optimitzem la informació perquè sigui més clara i útil.</span>
+                        <span data-lang="es">Optimizamos la información para que sea más clara y útil.</span>
+                    </li>
+                    <li>
+                        <span data-lang="ca">T'ajudem a ser més visible per als nous sistemes de recomanació.</span>
+                        <span data-lang="es">Te ayudamos a ser más visible para los nuevos sistemas de recomendación.</span>
+                    </li>
+                    <li>
+                        <span data-lang="ca">Fem que el teu contingut sigui més entenedor i accessible.</span>
+                        <span data-lang="es">Hacemos que tu contenido sea más comprensible y accesible.</span>
+                    </li>
+                    <li>
+                        <span data-lang="ca">Guiem el teu negoci perquè estigui preparat pels canvis que arriben.</span>
+                        <span data-lang="es">Guiamos tu negocio para que esté preparado para los cambios que llegan.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="shopping-cta">
+                <a href="#contact-form" class="btn btn-pill shopping-btn" onclick="trackShoppingCTA(); return false;">
+                    <span data-lang="ca">Vull que el meu negoci aparegui a ChatGPT Shopping</span>
+                    <span data-lang="es">Quiero que mi negocio aparezca en ChatGPT Shopping</span>
+                </a>
+            </div>
         </div>
     </section>
 
@@ -682,6 +1064,212 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        window.addEventListener('load', function() {
+            const form = document.getElementById('diagnostic-form');
+            if (form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const formElement = this;
+                    
+                    const submitBtn = document.getElementById('submit-diagnostic-btn');
+                    const submitText = document.getElementById('submit-text');
+                    const originalText = submitText.innerHTML;
+                    const currentLang = document.documentElement.lang || 'ca';
+                    
+                    // Deshabilitar botó i mostrar "Enviant..."
+                    submitBtn.disabled = true;
+                    submitText.innerHTML = currentLang === 'ca' ? 'Enviant...' : 'Enviando...';
+
+                    // Funció per enviar el correu amb reintent
+                    function sendEmail(attempts = 0) {
+                        // Comprovar si EmailJS està disponible i llest
+                        if (typeof emailjs === 'undefined' || !emailjs.send || !window.emailjsReady) {
+                            if (attempts < 15) {
+                                setTimeout(function() {
+                                    sendEmail(attempts + 1);
+                                }, 300);
+                                return;
+                            } else {
+                                // Restaurar botó
+                                submitBtn.disabled = false;
+                                submitText.innerHTML = originalText;
+                                alert(currentLang === 'ca' 
+                                    ? "Hi ha hagut un error de càrrega. Si us plau, refresca la pàgina i torna-ho a provar."
+                                    : "Ha habido un error de carga. Por favor, recarga la página y vuelve a intentarlo.");
+                                return;
+                            }
+                        }
+
+                        // Recuperar valors del formulari directament per name
+                        const nomInput = formElement.nom || formElement.querySelector('input[name="nom"]');
+                        const googleLinkInput = formElement.google_link || formElement.querySelector('input[name="google_link"]');
+                        const emailInput = formElement.email || formElement.querySelector('input[name="email"]');
+                        
+                        const nomValue = nomInput ? nomInput.value.trim() : '';
+                        const googleLinkValue = googleLinkInput ? googleLinkInput.value.trim() : '';
+                        const emailValue = emailInput ? emailInput.value.trim() : '';
+                        
+                        // Validar que tots els camps tinguin valors
+                        if (!nomValue || !googleLinkValue || !emailValue) {
+                            submitBtn.disabled = false;
+                            submitText.innerHTML = originalText;
+                            alert(currentLang === 'ca' 
+                                ? "Si us plau, omple tots els camps del formulari."
+                                : "Por favor, completa todos los campos del formulario.");
+                            return;
+                        }
+                        
+                        const formData = {
+                            title: "Diagnostic Google Business",
+                            name: nomValue,
+                            nom: nomValue,
+                            google_link: googleLinkValue,
+                            email: emailValue
+                        };
+                        
+                        console.log('Enviant formData:', formData); // Per debug
+                        console.log('Email value:', emailValue); // Debug específic per email
+                        
+                        emailjs.send("service_m83ddqz", "template_b1j4g7v", formData)
+                        .then((response) => {
+                            console.log('SUCCESS!', response.status, response.text);
+                            document.getElementById('confirmation-message').style.display = 'block';
+                            formElement.style.display = 'none';
+                        }, (error) => {
+                            // Restaurar botó en cas d'error
+                            submitBtn.disabled = false;
+                            submitText.innerHTML = originalText;
+                            console.error('FAILED...', error);
+                            console.error('Error details:', JSON.stringify(error, null, 2));
+                            
+                            // Missatge d'error més informatiu
+                            const errorMsg = currentLang === 'ca' 
+                                ? "Hi ha hagut un error enviant la sol·licitud. Torna-ho a provar o contacta'ns directament."
+                                : "Ha habido un error enviando la solicitud. Vuelve a intentarlo o contáctanos directamente.";
+                            alert(errorMsg);
+                        });
+                    }
+
+                    sendEmail();
+                });
+            }
+        });
+    </script>
+
+    <!-- Shopping CTA Tracking and Animations -->
+    <script>
+        // Funció de tracking per al botó Shopping CTA
+        function trackShoppingCTA() {
+            try {
+                // Obtenir el comptador actual del localStorage
+                let count = localStorage.getItem('shoppingCTAClicks') || 0;
+                count = parseInt(count) + 1;
+                
+                // Guardar el nou comptador
+                localStorage.setItem('shoppingCTAClicks', count);
+                
+                // Mostrar el comptador a la consola
+                console.log('Shopping CTA clicks:', count);
+                
+                // Scroll suau fins al formulari
+                const contactForm = document.getElementById('contact-form');
+                if (contactForm) {
+                    contactForm.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            } catch (error) {
+                console.error('Error tracking Shopping CTA:', error);
+                // En cas d'error, almenys fer scroll
+                const contactForm = document.getElementById('contact-form');
+                if (contactForm) {
+                    contactForm.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            }
+        }
+
+        // Inicialitzar animacions en fer scroll
+        function initShoppingAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Animar els punts de la llista
+                        const listItems = entry.target.querySelectorAll('.shopping-list li');
+                        listItems.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('visible');
+                            }, index * 100);
+                        });
+
+                        // Animar el botó
+                        const button = entry.target.querySelector('.shopping-btn');
+                        if (button) {
+                            setTimeout(() => {
+                                button.classList.add('visible');
+                            }, listItems.length * 100 + 200);
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            // Observar la secció Shopping
+            const shoppingSection = document.querySelector('.section-shopping');
+            if (shoppingSection) {
+                observer.observe(shoppingSection);
+            }
+        }
+
+        // Inicialitzar quan la pàgina estigui carregada
+        window.addEventListener('DOMContentLoaded', function() {
+            initShoppingAnimations();
+        });
+
+        // També inicialitzar quan la pàgina estigui completament carregada
+        window.addEventListener('load', function() {
+            initShoppingAnimations();
+        });
+    </script>
+
+    <!-- Back to Top Button Script -->
+    <script>
+        // Funció per fer scroll suau al principi
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Mostrar/ocultar el botó segons la posició del scroll
+        function toggleBackToTop() {
+            const backToTopBtn = document.querySelector('.back-to-top');
+            if (backToTopBtn) {
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            }
+        }
+
+        // Escoltar l'event de scroll
+        window.addEventListener('scroll', toggleBackToTop);
+        
+        // Comprovar la posició inicial
+        window.addEventListener('load', toggleBackToTop);
+    </script>
 
 </body>
 
